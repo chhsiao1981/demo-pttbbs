@@ -20,15 +20,15 @@ const _COLUMNS = [
   {Header: '', accessor: 'read', width: CHAR_WIDTH*4, fixed: true, type: 'read'},
   {Header: '看板', accessor: 'brdname', width: CHAR_WIDTH*12, fixed: true},
   {Header: '類別', accessor: 'class', width: CHAR_WIDTH*4, fixed: true},
-  {Header: '', accessor: 'type', width: CHAR_WIDTH*4, fixed: true},
+  {Header: '', accessor: 'type', width: CHAR_WIDTH*2, fixed: true},
   {Header: '中文敘述', accessor: 'title', width: CHAR_WIDTH*48, fixed: true},
   {Header: '人氣', accessor: 'nuser', width: CHAR_WIDTH*5, fixed: true},
-  {Header: '板主', accessor: 'moderators', width: CHAR_WIDTH*38, fixed: true, type: 'moderator'},
+  {Header: '板主', accessor: 'moderators', width: CHAR_WIDTH*34, fixed: true, type: 'moderator'},
   {Header: '', accessor: '', width: 0, fixed: true, type: 'rest'},
 ]
 
 export default (props) => {
-  const {boards, width, height, onScrollEnd} = props
+  const {boards, width, height, onScrollEnd, cmds} = props
 
   let renderCell = (column, data, fontSize) => {
     switch(column.accessor) {
@@ -55,7 +55,7 @@ export default (props) => {
 
   let renderHeader = (column, fontSize) => {
     let style = {
-      'font-size': fontSize + 'px',
+      fontSize: fontSize + 'px',
     }
 
     return (<Cell className={screenStyles['header']} style={style}>{column.Header}</Cell>)
@@ -63,7 +63,7 @@ export default (props) => {
 
   return (
     <div>
-      <Screen width={width} height={height} columns={_COLUMNS} data={boards} renderCell={renderCell} renderHeader={renderHeader} onScrollEnd={onScrollEnd} />
+      <Screen width={width} height={height} columns={_COLUMNS} data={boards} renderCell={renderCell} renderHeader={renderHeader} onScrollEnd={onScrollEnd} cmds={cmds} />
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import pageStyles from './Page.module.css'
 
-import * as errors from './errors'
+//import * as errors from './errors'
 
 import { useWindowSize } from 'react-use'
 
@@ -17,6 +17,8 @@ import queryString from 'query-string'
 
 import { getLimitByHeight } from './utils'
 
+import { PROMPT_QUERY } from './constants'
+
 export default (props) => {
   const [stateGeneralBoardsPage, doGeneralBoardsPage] = useActionDispatchReducer(DoGeneralBoardsPage)
 
@@ -29,30 +31,26 @@ export default (props) => {
 
   const params = queryString.parse(window.location.search)
   let paramsKeywords = params.keywords || ''
-  let paramsStartIdx = params.start || ''
+  let startIdx = params.start || ''
 
   const [isByClass, setIsByClass] = useState(true)
   const [keywords, setKeywords] = useState(paramsKeywords)
-  const [startIdx, setStartIdx] = useState(paramsStartIdx)
   const [startRowIdx, setStartRowIdx] = useState(-1)
   const [endRowIdx, setEndRowIdx] = useState(-1)
-  const [isAsc, setIsAsc] = useState(true)
 
   //init
 
   useEffect(() => {
     let hotBoardsPageID = genUUID()
-    doGeneralBoardsPage.init(hotBoardsPageID, doGeneralBoardsPage, null, null, isByClass, startIdx, keywords, keywords, isAsc)
+    doGeneralBoardsPage.init(hotBoardsPageID, doGeneralBoardsPage, null, null, isByClass, startIdx, keywords, keywords, limit)
   }, [])
 
   //get data
   let generalBoardsPage = getRoot(stateGeneralBoardsPage) || {}
   let myID = generalBoardsPage.id || ''
-  let errmsg = generalBoardsPage.errmsg || ''
+  //let errmsg = generalBoardsPage.errmsg || ''
   let boards = generalBoardsPage.list || []
   let nextIdx = generalBoardsPage.nextIdx || ''
-  boards = _DATA.list
-  nextIdx = _DATA.nextIdx
 
   //render
 
@@ -61,13 +59,43 @@ export default (props) => {
 
   //let allErrMsg = errors.mergeErr(errMsg, errmsg)
 
-  let onScrollEnd = (x, y, startRowIdx, endRowIdx) => {
-    console.log('onScrollEnd: x:', x, 'y:', y, 'startRowIdx:', startRowIdx, 'endRowIdx:', endRowIdx)
-    if(isToLoadPre()) {
+  let isToLoadPre = (startRowIdx, newStartRowIdx) => {
+    return boards.length > 0 && boards[0].numIdx !== 0 && newStartRowIdx === 0 && startRowIdx !== newStartRowIdx
+  }
+
+  let isToLoadNext = (endRowIdx, newEndRowIdx) => {
+    return nextIdx !== '' && newEndRowIdx === boards.length - 1 && endRowIdx !== newEndRowIdx
+  }
+
+  let onScrollEnd = (x, y, newStartRowIdx, newEndRowIdx) => {
+    if(isToLoadPre(startRowIdx, newStartRowIdx)) {
       doGeneralBoardsPage.getData(myID, isByClass, startIdx, keywords, keywords, false, limit)
     }
+    if(isToLoadNext(endRowIdx, newEndRowIdx)) {
+      doGeneralBoardsPage.getData(myID, isByClass, startIdx, keywords, keywords, true, limit)
+    }
 
+    setStartRowIdx(newStartRowIdx)
+    setEndRowIdx(newEndRowIdx)
   }
+
+  let renderIsByClass = () => {
+    return(
+      <div onClick={() => setIsByClass(!isByClass)}>
+      </div>
+    )
+  }
+
+  let renderQuery = () => {
+    return(
+      <input className='form-control' type='text' placeholder={PROMPT_QUERY} onChange={(e) => setKeywords(e.target.value)}/>
+    )
+  }
+
+  let cmds = [
+    {name: 'isByClass', render: renderIsByClass},
+    {name: 'query', render: renderQuery},
+  ]
 
   let renderBoardList = () => {
     if(boards.length === 0) {
@@ -75,12 +103,9 @@ export default (props) => {
       return (<EmptyBoardList width={width} height={boardListHeight} prompt={"還沒有任何看板喔～"} />)
     }
     else {
-      return (<BoardList boards={boards} width={width} height={boardListHeight} nextIdx={nextIdx} onScrollEnd={onScrollEnd} />)
+      return (<BoardList boards={boards} width={width} height={boardListHeight} nextIdx={nextIdx} onScrollEnd={onScrollEnd} cmds={cmds} />)
     }
   }
-
-  let cmds = [
-  ]
 
   return (
     <div className={pageStyles['root']}>

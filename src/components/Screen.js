@@ -41,6 +41,7 @@ export default (props) => {
 
   let renderColumn = (column, idx, data) => {
     let columnWidth = column.type === 'rest' ? theRestWidth : parseInt(column.width*scale)
+    console.log('Screen.renderColumn: name:', column.accessor, 'width:', columnWidth)
     return (
       <Column
         key={'column'+idx}
