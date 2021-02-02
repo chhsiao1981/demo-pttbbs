@@ -105,3 +105,27 @@ export const LoadPopularBoards = () => ({
   endpoint: '/api/boards/popular',
   method: 'get',
 })
+
+export const LoadGeneralBoardsByClass = (startIdx, title, brdname, isAsc, limit) => ({
+  endpoint: '/api/boards/byclass'  ,
+  method: 'get',
+  query: {
+    start_idx: startIdx,
+    title,
+    brdname,
+    asc: isAsc,
+    limit: limit,
+  },
+})
+
+export const LoadGeneralBoards = (startIdx, title, brdname, isAsc, limit) => ({
+  endpoint: '/api/boards'  ,
+  method: 'get',
+  query: {
+    start_idx: startIdx,
+    title,
+    brdname,
+    asc: isAsc,
+    limit: limit,
+  },
+})
