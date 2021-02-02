@@ -9,6 +9,8 @@ import ModeratorsCell from './cells/ModeratorsCell'
 
 import Screen from './Screen'
 
+//import { PROMPT_QUERY, PROMPT_GOTO } from './constants'
+
 
 import { CHAR_WIDTH } from './utils'
 
@@ -26,7 +28,7 @@ const _COLUMNS = [
 ]
 
 export default (props) => {
-  const {boards, width, height} = props
+  const {boards, width, height, onScrollEnd} = props
 
   let renderCell = (column, data, fontSize) => {
     switch(column.accessor) {
@@ -60,6 +62,8 @@ export default (props) => {
   }
 
   return (
-    <Screen width={width} height={height} columns={_COLUMNS} data={boards} renderCell={renderCell} renderHeader={renderHeader} />
+    <div>
+      <Screen width={width} height={height} columns={_COLUMNS} data={boards} renderCell={renderCell} renderHeader={renderHeader} onScrollEnd={onScrollEnd} />
+    </div>
   )
 }

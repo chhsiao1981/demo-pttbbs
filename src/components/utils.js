@@ -15,6 +15,8 @@ const MAX_SCALE = 1.2
 
 const FONT_SIZE_SCALE = 0.70
 
+const LIMIT_SIZE = 25
+
 export const CalcScreenScale = (width) => {
   let scale = width / BASE_COLUMN_WIDTH
   scale = scale < MAX_SCALE ? scale : MAX_SCALE
@@ -24,4 +26,7 @@ export const CalcScreenScale = (width) => {
   let fontSize = parseInt(lineHeight * FONT_SIZE_SCALE)
 
   return [scale, lineHeight, fontSize]
+}
+export const getLimitByHeight = (height) => {
+  return parseInt(height / BASE_LINE_HEIGHT) * LIMIT_SIZE
 }

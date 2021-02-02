@@ -15,7 +15,7 @@ const _DEFAULT_COLUMNS = [
 ]
 
 export default (props) => {
-  const {width, height, columns: propsColumns, data, renderCell: propsRenderCell, renderHeader} = props
+  const {width, height, columns: propsColumns, data, renderCell: propsRenderCell, renderHeader, onVerticalScroll, onScrollEnd} = props
 
   let columns = propsColumns || _DEFAULT_COLUMNS
 
@@ -60,7 +60,10 @@ export default (props) => {
       width={width}
       height={height}
       showScrollbarX={false}
-      showScrollbarY={false}>
+      showScrollbarY={false}
+      keyboardPageEnabled={true}
+      onVerticalScroll={onVerticalScroll}
+      onScrollEnd={onScrollEnd}>
       {columns.map((column, idx) => renderColumn(column, idx, data))}
     </Table>
   )

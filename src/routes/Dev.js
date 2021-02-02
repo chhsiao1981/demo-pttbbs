@@ -9,6 +9,7 @@ import AttemptSetIDEmailPage from '../components/AttemptSetIDEmailPage'
 import SetIDEmailPage from '../components/SetIDEmailPage'
 import RegisterPage from '../components/RegisterPage'
 import HotBoardsPage from '../components/HotBoardsPage'
+import GeneralBoardsPage from '../components/GeneralBoardsPage'
 
 export default (props) => {
   return (
@@ -23,6 +24,7 @@ export default (props) => {
         <Route exact path="/user/:userid/attemptsetidemail" component={AttemptSetIDEmailPage} />
         <Route exact path="/user/:userid/setidemail" component={SetIDEmailPage} />
         <Route exact path="/boards/popular" component={HotBoardsPage} />
+        <Route exact path="/boards" component={GeneralBoardsPage} />
       </Switch>
     </Router>
   )
