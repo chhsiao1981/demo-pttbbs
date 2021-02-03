@@ -23,7 +23,7 @@ const _COLUMNS = [
   {Header: '', accessor: 'type', width: CHAR_WIDTH*2, fixed: true},
   {Header: '中文敘述', accessor: 'title', width: CHAR_WIDTH*48, fixed: true},
   {Header: '人氣', accessor: 'nuser', width: CHAR_WIDTH*5, fixed: true},
-  {Header: '板主', accessor: 'moderators', width: CHAR_WIDTH*34, fixed: true, type: 'moderator'},
+  {Header: '板主', accessor: 'moderators', width: CHAR_WIDTH*38, fixed: true, type: 'moderator'},
   {Header: '', accessor: '', width: 0, fixed: true, type: 'rest'},
 ]
 
